@@ -1,6 +1,6 @@
 # Личный проект «Кекстаграм»
 
-* Студент: [Viktor Ivanov](https://up.htmlacademy.ru/javascript/23/user/1254935).
+* Студент: [Viktor Ivanov](https://htmlacademy.ru/profile/id1254935).
 * Наставник: [Елена Грицук](https://htmlacademy.ru/profile/id199079).
 
 ---
