@@ -56,12 +56,12 @@ const getRandomArrElement = (elements) => elements[getRandomNumber(0, elements.l
 const getIndexes = (count) => [...Array(count).keys()];
 
 const getSortedComments = (arr) => arr.sort(() => .5 - Math.random());
-const getRondomComments = (arr) => getSortedComments(arr).slice(getRandomNumber (1, 2));
+const getRandomComments = (arr) => getSortedComments(arr).slice(getRandomNumber (1, 2));
 
 const createComment = (index) => ({
   id: index + 1,
   avatar: `${AVATAR + (getRandomNumber(AvatarNumber.MIN, AvatarNumber.MAX))}.svg`,
-  message: getRondomComments(MESSAGES).toString(),
+  message: getRandomComments(MESSAGES).toString(),
   name: getRandomArrElement(USER_NAMES),
 });
 
