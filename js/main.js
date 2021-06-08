@@ -5,7 +5,7 @@ const AVATAR = 'img/avatar-';
 const SIMILAR_POSTS_COUNT = 25;
 const SIMILAR_COMMENTS_COUNT = 6;
 
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Всегда так пусто',
   'Пляж где-то там',
   'Тишина',
@@ -17,7 +17,7 @@ const DESCRIPTION = [
   'Было классно',
 ];
 
-const MESSAGE = [
+const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -26,7 +26,7 @@ const MESSAGE = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
 ];
 
-const USER_NAME = [
+const USER_NAMES = [
   'Виктор',
   'Нина',
   'Пётр',
@@ -55,34 +55,28 @@ const getRandomArrElement = (elements) => elements[getRandomNumber(0, elements.l
 
 const getIndexes = (count) => [...Array(count).keys()];
 
-Array.prototype.getRandom = function(num, cut){
-  const Asr = cut ? this : this.slice(0);
-  Asr.sort(() => .5 - Math.random());
-  return Asr.splice(0, num);
-};
+const getSortedComments = (arr) => arr.sort(() => .5 - Math.random());
+const getRondomComments = (arr) => getSortedComments(arr).slice(getRandomNumber (1, 2));
 
-const createComment = function(index) {
-  return {
-    id: index + 1,
-    avatar: `${AVATAR + (getRandomNumber(AvatarNumber.MIN, AvatarNumber.MAX))}.svg`,
-    message: MESSAGE.getRandom(getRandomNumber(1, 2)),
-    name: getRandomArrElement(USER_NAME),
-  };
-};
+const createComment = (index) => ({
+  id: index + 1,
+  avatar: `${AVATAR + (getRandomNumber(AvatarNumber.MIN, AvatarNumber.MAX))}.svg`,
+  message: getRondomComments(MESSAGES).toString(),
+  name: getRandomArrElement(USER_NAMES),
+});
 
-const createPost = function (index) {
+const createPost = (index) => {
   const similarComments = getIndexes(getRandomNumber(0, SIMILAR_COMMENTS_COUNT)).map(createComment);
   return {
     id: index + 1,
     url: `${PHOTOS + (index + 1)}.jpg`,
-    description: getRandomArrElement(DESCRIPTION),
+    description: getRandomArrElement(DESCRIPTIONS),
     likes: getRandomNumber(LikesCount.MIN, LikesCount.MAX),
     comments: similarComments,
   };
 };
 
+// eslint-disable-next-line no-unused-vars
 const createSimilarPhotoDescription = getIndexes(SIMILAR_POSTS_COUNT).map(createPost);
-createSimilarPhotoDescription;
 // console.log(createSimilarPhotoDescription);
-
 getMaxStringLength(chekedString, MAX_LENGTH);
