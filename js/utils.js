@@ -8,4 +8,17 @@ const getRandomArrElement = (elements) => elements[getRandomNumber(0, elements.l
 
 const getIndexes = (count) => [...Array(count).keys()];
 
-export {getMaxStringLength, getRandomNumber, getRandomArrElement, getIndexes};
+const getRandomNonRepeatingNumbers = (min, max) => {
+  const previousValues = [];
+  let currentValue = getRandomNumber(min, max);
+  if (previousValues.length >= (max - min + 1)) {
+    throw new Error(`Перебраны все числа из диапазона от ${  min  } до ${  max}`);
+  }
+  while (previousValues.includes(currentValue)) {
+    currentValue = getRandomNumber(min, max);
+  }
+  previousValues.push(currentValue);
+  return currentValue;
+};
+
+export {getMaxStringLength, getRandomNumber, getRandomArrElement, getIndexes, getRandomNonRepeatingNumbers};
