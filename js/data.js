@@ -69,7 +69,8 @@ const createPost = (index) => {
   };
 };
 
-// eslint-disable-next-line no-unused-vars
 const createSimilarPhotoDescription = getIndexes(SIMILAR_POSTS_COUNT).map(createPost);
 // console.log(createSimilarPhotoDescription);
 getMaxStringLength(chekedString, MAX_LENGTH);
+
+export {createSimilarPhotoDescription};
