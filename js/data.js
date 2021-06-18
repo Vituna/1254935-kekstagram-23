@@ -57,7 +57,7 @@ const getRandomComments = (arr) => {
 const createComment = (index) => ({
   id: index + 1,
   avatar: `${AVATAR + (getRandomNumber(AvatarNumber.MIN, AvatarNumber.MAX))}.svg`,
-  message: getRandomComments(MESSAGES).toString(),
+  message: getRandomComments(MESSAGES).join(' '),
   name: getRandomArrElement(USER_NAMES),
 });
 
