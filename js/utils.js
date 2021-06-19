@@ -21,4 +21,6 @@ const getRandomNonRepeatingNumbers = (min, max) => {
   return currentValue;
 };
 
-export {getMaxStringLength, getRandomNumber, getRandomArrElement, getIndexes, getRandomNonRepeatingNumbers};
+const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
+
+export {getMaxStringLength, getRandomNumber, getRandomArrElement, getIndexes, getRandomNonRepeatingNumbers, isEscEvent};

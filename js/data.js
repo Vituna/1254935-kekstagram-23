@@ -48,13 +48,16 @@ const AvatarNumber = {
 
 const chekedString = [];
 
-const getSortedComments = (arr) => arr.sort(() => .5 - Math.random());
-const getRandomComments = (arr) => getSortedComments(arr).slice(getRandomNumber (1, 2));
+const getRandomComments = (arr) => {
+  const sortedComments = arr.sort(() => .5 - Math.random());
+  const numberComments = sortedComments.slice(0, getRandomNumber(1, 2));
+  return numberComments;
+};
 
 const createComment = (index) => ({
   id: index + 1,
   avatar: `${AVATAR + (getRandomNumber(AvatarNumber.MIN, AvatarNumber.MAX))}.svg`,
-  message: getRandomComments(MESSAGES).toString(),
+  message: getRandomComments(MESSAGES).join(' '),
   name: getRandomArrElement(USER_NAMES),
 });
 
@@ -69,8 +72,7 @@ const createPost = (index) => {
   };
 };
 
-const createSimilarPhotoDescription = getIndexes(SIMILAR_POSTS_COUNT).map(createPost);
-// console.log(createSimilarPhotoDescription);
+const userPhotos = getIndexes(SIMILAR_POSTS_COUNT).map(createPost);
 getMaxStringLength(chekedString, MAX_LENGTH);
 
-export {createSimilarPhotoDescription};
+export {userPhotos};

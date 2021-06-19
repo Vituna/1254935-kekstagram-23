@@ -1,13 +1,13 @@
-import {createSimilarPhotoDescription} from './data.js';
+import {userPhotos} from './data.js';
 
-const thumbailContair = document.querySelector('.pictures');
+const thumbailContainer = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
 const generateThumbnail = document.createDocumentFragment();
 
-createSimilarPhotoDescription.forEach(({url, comments, likes}) => {
+userPhotos.forEach(({url, comments, likes}) => {
   const newThumbnail = thumbnailTemplate.cloneNode(true);
   newThumbnail.querySelector('.picture__img').src = url;
   newThumbnail.querySelector('.picture__comments').textContent = comments.length;
@@ -15,4 +15,4 @@ createSimilarPhotoDescription.forEach(({url, comments, likes}) => {
   generateThumbnail.appendChild(newThumbnail);
 });
 
-thumbailContair.appendChild(generateThumbnail);
+thumbailContainer.appendChild(generateThumbnail);
