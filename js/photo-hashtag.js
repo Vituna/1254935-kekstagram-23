@@ -8,16 +8,14 @@ const inputHashtag = document.querySelector('.text__hashtags');
 const onHashtagInput = () => {
   let hashtagCorrect = true;
   let hashtagsMaxLength = 0;
-  let hashtagDuplicatesCount = 0;
 
   const hashtags = inputHashtag.value.split(' ');
   const hashtag = hashtags.map((tag) => tag.toLowerCase());
+  const hashtagsSet = new Set(hashtag);
+
   // eslint-disable-next-line id-length
   for (let i = 0; i < hashtag.length; i++) {
     hashtagsMaxLength = Math.max(hashtagsMaxLength, hashtag[i].length);
-    if (hashtag[i] === hashtag[i + 1]) {
-      hashtagDuplicatesCount++;
-    }
     hashtagCorrect = hashtagCorrect && HASHTAG_REGEXP.test(hashtag[i]);
   }
 
@@ -29,7 +27,7 @@ const onHashtagInput = () => {
     inputHashtag.setCustomValidity(`Максимальная длина хэш-тега ${MAX_HASHTAG_LENGTH} символов, включая решётку`);
   } else if (hashtag.length > MAX_HASHTAG_COUNT) {
     inputHashtag.setCustomValidity(`Нельзя указать больше чем ${MAX_HASHTAG_COUNT} хэш-тегов`);
-  } else if (hashtagDuplicatesCount > 0) {
+  } else if (hashtag.length !== hashtagsSet.size) {
     inputHashtag.setCustomValidity('Такой хэш-тег уже набран');
   } else {
     inputHashtag.setCustomValidity('');
