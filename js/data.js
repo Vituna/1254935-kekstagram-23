@@ -4,7 +4,7 @@ const MAX_LENGTH = 140;
 const PHOTOS = 'photos/';
 const AVATAR = 'img/avatar-';
 const SIMILAR_POSTS_COUNT = 25;
-const SIMILAR_COMMENTS_COUNT = 6;
+const SIMILAR_COMMENTS_COUNT = 20;
 
 const DESCRIPTIONS = [
   'Всегда так пусто',
