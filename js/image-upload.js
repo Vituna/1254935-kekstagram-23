@@ -18,26 +18,25 @@ const toggleModal = () => {
 
 const onCloseUploadUserPhoto = () => {
   toggleModal();
-  // eslint-disable-next-line no-use-before-define
-  document.removeEventListener('keydown',onPopupEscKeydown);
   closeUploadFile.removeEventListener('click', onCloseUploadUserPhoto);
   inputHashtag.removeEventListener('input', onHashtagInput);
 };
 
+const onPopupEscKeydown = (evt) => {
+  if (isEscEvent(evt) && !getCatchesFocus()) {
+    evt.preventDefault();
+    imageUploadForm.reset();
+    document.removeEventListener('keydown', onPopupEscKeydown);
+    onCloseUploadUserPhoto();
+  }
+};
+
 const onOpenUploadUserPhoto = () => {
   toggleModal();
-  // eslint-disable-next-line no-use-before-define
-  document.addEventListener('keydown',onPopupEscKeydown);
+  document.addEventListener('keydown', onPopupEscKeydown);
   closeUploadFile.addEventListener('click', onCloseUploadUserPhoto);
   inputHashtag.addEventListener('input', onHashtagInput);
 };
 
 uploadFile.addEventListener('change', onOpenUploadUserPhoto);
 
-const onPopupEscKeydown = (evt) => {
-  if (isEscEvent(evt) && !getCatchesFocus()) {
-    evt.preventDefault();
-    imageUploadForm.reset();
-    onCloseUploadUserPhoto();
-  }
-};

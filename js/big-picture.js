@@ -1,7 +1,7 @@
 import {userPhotos} from './data.js';
 import {isEscEvent} from './utils.js';
 
-const MAX_NUMBER_COMENT = 5;
+const MAX_NUMBER_COMMENT = 5;
 
 const body = document.querySelector('body');
 const photoList = body.querySelectorAll('.picture');
@@ -33,6 +33,16 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
+const addCommentsLoader = (loaderComment) => {
+  commentsLoader.classList.remove('hidden');
+  commentsLoader.addEventListener('click', loaderComment);
+};
+
+const removeCommentsLoader = (loaderComment) => {
+  commentsLoader.classList.add('hidden');
+  commentsLoader.removeEventListener('click', loaderComment);
+};
+
 const getCommentCountHTML = (numberOpenComments, allComments) =>
   `${numberOpenComments} из <span class="comments-count">${allComments}</span> комментариев`;
 
@@ -45,25 +55,22 @@ const createNewComment = ({avatar, name, message}) => {
         src="${avatar}"
         alt="${name}"
         width="35" height="35">
-    <p class="social__text"></p>
+    <p class="social__text">${message}</p>
   `;
-  commentBlock.querySelector('.social__text').textContent = message;
   return commentBlock;
 };
 
 const onCommentsLoaderClick = () => {
-  const commentItem = currentComments
-    .slice(lastShownComment, lastShownComment + MAX_NUMBER_COMENT)
+  const commentsItem = currentComments
+    .slice(lastShownComment, lastShownComment + MAX_NUMBER_COMMENT)
     .map(createNewComment);
 
-  commentItem.forEach((element) => commentFragment.appendChild(element));
+  commentsItem.forEach((element) => commentFragment.appendChild(element));
   commentsList.appendChild(commentFragment);
 
-  lastShownComment += MAX_NUMBER_COMENT;
+  lastShownComment += commentsItem.length;
   if (lastShownComment >= currentComments.length) {
-    lastShownComment = currentComments.length;
-    // eslint-disable-next-line no-use-before-define
-    addCommentsLoader();
+    removeCommentsLoader(onCommentsLoaderClick);
   }
   socialCommentCount.innerHTML = getCommentCountHTML(lastShownComment, currentComments.length);
 };
@@ -74,9 +81,8 @@ const updateComments = ({comments}) => {
   commentsList.innerHTML = '';
 
   if (comments.length > 0) {
-    // eslint-disable-next-line no-use-before-define
-    removeCommentsLoader();
-    commentsLoader.click();
+    addCommentsLoader(onCommentsLoaderClick);
+    onCommentsLoaderClick();
   } else {
     socialCommentCount.innerHTML = getCommentCountHTML(0, 0);
   }
@@ -91,7 +97,6 @@ const showPreview = ({url, likes, comments, description}) => {
   bigPictureCommentsAll.textContent = comments.length;
   bigPictureDescription.textContent = description;
 
-  onCommentsLoaderClick();
   commentsList.appendChild(commentFragment);
 };
 
@@ -104,16 +109,6 @@ const addPhotoListClickHandler = (element, index ) => {
 };
 
 photoList.forEach(addPhotoListClickHandler);
-
-const removeCommentsLoader = () => {
-  commentsLoader.classList.remove('hidden');
-  commentsLoader.addEventListener('click', onCommentsLoaderClick);
-};
-
-const addCommentsLoader = () => {
-  commentsLoader.classList.add('hidden');
-  commentsLoader.removeEventListener('click', onCommentsLoaderClick);
-};
 
 const closeBigPhoto = () =>{
   tooglePreview();

@@ -15,11 +15,10 @@ const onHashtagInput = () => {
   const hashtag = hashtags.map((tag) => tag.toLowerCase());
   const hashtagsSet = new Set(hashtag);
 
-  // eslint-disable-next-line id-length
-  for (let i = 0; i < hashtag.length; i++) {
-    hashtagsMaxLength = Math.max(hashtagsMaxLength, hashtag[i].length);
+  for (let index = 0; index < hashtag.length; index++) {
+    hashtagsMaxLength = Math.max(hashtagsMaxLength, hashtag[index].length);
 
-    hashtagCorrect = hashtagCorrect && HASHTAG_REGEXP.test(hashtag[i]);
+    hashtagCorrect = hashtagCorrect && HASHTAG_REGEXP.test(hashtag[index]);
   }
   if (hashtagsMaxLength === 0) {
     inputHashtag.setCustomValidity('');
