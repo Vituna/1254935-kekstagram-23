@@ -116,4 +116,4 @@ const closeBigPhoto = () =>{
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
-closeButton.addEventListener('click', closeBigPhoto());
+closeButton.addEventListener('click', closeBigPhoto);
