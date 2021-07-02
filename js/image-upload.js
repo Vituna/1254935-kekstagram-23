@@ -1,7 +1,7 @@
 import {isEscEvent} from './utils.js';
 import {onHashtagInput} from './photo-hashtag.js';
 import {setDefaultScale, onMinusButtonClick, onPlusButtonClick} from './scale.js';
-import {onNoneEffectClick} from './effects.js';
+import {initEffects, destroyEffects} from './effects.js';
 
 const body = document.querySelector('body');
 const imageUploadForm = body.querySelector('.img-upload__form');
@@ -30,7 +30,8 @@ const getDownloadPhoto = () => {
 const onCloseUploadUserPhoto = () => {
   toggleModal();
   setDefaultScale();
-  onNoneEffectClick();
+  destroyEffects();
+  userUploadPhoto.classList.add('hidden');
   closeUploadFile.removeEventListener('click', onCloseUploadUserPhoto);
   inputHashtag.removeEventListener('input', onHashtagInput);
   scaleControlSmaller.removeEventListener('click', onMinusButtonClick);
@@ -49,6 +50,8 @@ const onPopupEscKeydown = (evt) => {
 
 const onOpenUploadUserPhoto = () => {
   toggleModal();
+  initEffects();
+  userUploadPhoto.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscKeydown);
   closeUploadFile.addEventListener('click', onCloseUploadUserPhoto);
   inputHashtag.addEventListener('input', onHashtagInput);
