@@ -22,14 +22,14 @@ let lastShownComment = 0;
 
 const tooglePreview = () => {
   bigPicture.classList.toggle('hidden');
-  commentsLoader.classList.add('hidden');
   body.classList.toggle('modal-open');
 };
 
 const onPopupEscKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
-    tooglePreview();
+    bigPicture.classList.add('hidden');
+    body.classList.remove('modal-open');
   }
 };
 
@@ -61,14 +61,14 @@ const createNewComment = ({avatar, name, message}) => {
 };
 
 const onCommentsLoaderClick = () => {
-  const commentsItem = currentComments
+  const comments = currentComments
     .slice(lastShownComment, lastShownComment + MAX_NUMBER_COMMENT)
     .map(createNewComment);
 
-  commentsItem.forEach((element) => commentFragment.appendChild(element));
+  comments.forEach((element) => commentFragment.appendChild(element));
   commentsList.appendChild(commentFragment);
 
-  lastShownComment += commentsItem.length;
+  lastShownComment += comments.length;
   if (lastShownComment >= currentComments.length) {
     removeCommentsLoader(onCommentsLoaderClick);
   }
@@ -111,10 +111,9 @@ const addPhotoListClickHandler = (element, index ) => {
 photoList.forEach(addPhotoListClickHandler);
 
 const closeBigPhoto = () =>{
-  tooglePreview();
+  bigPicture.classList.add('hidden');
+  body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
-closeButton.addEventListener('click', () => {
-  closeBigPhoto();
-});
+closeButton.addEventListener('click', closeBigPhoto);
