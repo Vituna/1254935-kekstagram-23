@@ -1,10 +1,8 @@
-import {userPhotos} from './data.js';
 import {isEscEvent} from './utils.js';
 
 const MAX_NUMBER_COMMENT = 5;
 
 const body = document.querySelector('body');
-const photoList = body.querySelectorAll('.picture');
 const bigPicture = body.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -91,6 +89,7 @@ const updateComments = ({comments}) => {
 const showPreview = ({url, likes, comments, description}) => {
   commentsList.innerHTML = '';
   tooglePreview();
+  updateComments({comments});
 
   bigPictureImg.querySelector('img').src = url;
   bigPictureLikes.textContent = likes;
@@ -100,20 +99,32 @@ const showPreview = ({url, likes, comments, description}) => {
   commentsList.appendChild(commentFragment);
 };
 
-const addPhotoListClickHandler = (element, index ) => {
-  element.addEventListener('click', () => {
-    showPreview(userPhotos[index]);
-    updateComments(userPhotos[index]);
-    document.addEventListener('keydown', onPopupEscKeydown);
-  });
-};
-
-photoList.forEach(addPhotoListClickHandler);
-
-const closeBigPhoto = () =>{
+const closeBigPhoto = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
-closeButton.addEventListener('click', closeBigPhoto);
+const openBigPhoto = (element ) => {
+  showPreview(element);
+  document.addEventListener('keydown', onPopupEscKeydown);
+  closeButton.addEventListener('click', closeBigPhoto);
+};
+
+const addPhotoListClickHandler = (data) => {
+  const photoList = document.querySelector('.pictures');
+
+  const previewClickHandler = (evt) => {
+    if (evt.target.closest('.picture')) {
+      evt.preventDefault();
+      const preview = evt.target.closest('.picture');
+      const previewId = +preview.dataset.id;
+      const dataElement = data.find(({id}) => id === previewId);
+
+      openBigPhoto(dataElement);
+    }
+  };
+  photoList.addEventListener('click', previewClickHandler);
+};
+
+export {addPhotoListClickHandler};

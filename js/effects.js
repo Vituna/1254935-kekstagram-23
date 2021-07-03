@@ -49,7 +49,7 @@ const effectsList = document.querySelector('.effects__list');
 
 let currentEffect;
 
-const setsEffects = (nameEffect) => {
+const setEffect = (nameEffect) => {
   const {
     min,
     max,
@@ -105,18 +105,18 @@ const destroyEffect = () => {
   effectLevelValue.value = '';
 };
 
-const onEffectsChange = (evt) => {
-  const effectRadioBotton = evt.target;
+const onEffectChange = (evt) => {
+  const effectRadioButton = evt.target;
 
-  if (effectRadioBotton.matches('.effects__radio')) {
+  if (effectRadioButton.matches('.effects__radio')) {
     imagePreview.classList.remove(`effects__preview--${currentEffect}`);
-    currentEffect = effectRadioBotton.value;
+    currentEffect = effectRadioButton.value;
     imagePreview.classList.add(`effects__preview--${currentEffect}`);
 
     if (currentEffect === 'none') {
       destroyEffect();
     } else {
-      setsEffects(currentEffect);
+      setEffect(currentEffect);
     }
   }
 };
@@ -124,13 +124,13 @@ const onEffectsChange = (evt) => {
 const initEffects = () => {
   currentEffect = 'none';
   imagePreview.classList.add(`effects__preview--${currentEffect}`);
-  effectsList.addEventListener('change', onEffectsChange);
+  effectsList.addEventListener('change', onEffectChange);
 };
 
 const destroyEffects = () => {
   destroyEffect();
   imagePreview.classList.remove(`effects__preview--${currentEffect}`);
-  effectsList.removeEventListener('change', onEffectsChange);
+  effectsList.removeEventListener('change', onEffectChange);
 };
 
 export {initEffects, destroyEffects};
