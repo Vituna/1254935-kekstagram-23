@@ -31,12 +31,12 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-const addCommentsLoader = (loaderComment) => {
+const addCommentsLoaderHandler = (loaderComment) => {
   commentsLoader.classList.remove('hidden');
   commentsLoader.addEventListener('click', loaderComment);
 };
 
-const removeCommentsLoader = (loaderComment) => {
+const removeCommentsLoaderHandler = (loaderComment) => {
   commentsLoader.classList.add('hidden');
   commentsLoader.removeEventListener('click', loaderComment);
 };
@@ -68,7 +68,7 @@ const onCommentsLoaderClick = () => {
 
   lastShownComment += comments.length;
   if (lastShownComment >= currentComments.length) {
-    removeCommentsLoader(onCommentsLoaderClick);
+    removeCommentsLoaderHandler(onCommentsLoaderClick);
   }
   socialCommentCount.innerHTML = getCommentCountHTML(lastShownComment, currentComments.length);
 };
@@ -79,7 +79,7 @@ const updateComments = ({comments}) => {
   commentsList.innerHTML = '';
 
   if (comments.length > 0) {
-    addCommentsLoader(onCommentsLoaderClick);
+    addCommentsLoaderHandler(onCommentsLoaderClick);
     onCommentsLoaderClick();
   } else {
     socialCommentCount.innerHTML = getCommentCountHTML(0, 0);
@@ -99,29 +99,29 @@ const showPreview = ({url, likes, comments, description}) => {
   commentsList.appendChild(commentFragment);
 };
 
-const closeBigPhoto = () => {
+const closeBigPhotoHandler = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
-const openBigPhoto = (element ) => {
+const openBigPhotoHandler = (element ) => {
   showPreview(element);
   document.addEventListener('keydown', onPopupEscKeydown);
-  closeButton.addEventListener('click', closeBigPhoto);
+  closeButton.addEventListener('click', closeBigPhotoHandler);
 };
 
 const addPhotoListClickHandler = (data) => {
   const photoList = document.querySelector('.pictures');
 
   const previewClickHandler = (evt) => {
-    if (evt.target.closest('.picture')) {
+    const preview = evt.target.closest('.picture');
+    if (preview) {
       evt.preventDefault();
-      const preview = evt.target.closest('.picture');
       const previewId = +preview.dataset.id;
       const dataElement = data.find(({id}) => id === previewId);
 
-      openBigPhoto(dataElement);
+      openBigPhotoHandler(dataElement);
     }
   };
   photoList.addEventListener('click', previewClickHandler);

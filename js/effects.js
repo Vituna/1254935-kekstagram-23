@@ -43,8 +43,9 @@ const EffectNameToFilter = {
 
 const imageUploadPreview = document.querySelector('.img-upload__preview');
 const imagePreview = imageUploadPreview.querySelector('img');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const effectLevelSlider = document.querySelector('.effect-level__slider');
+const imgUploadEffectLevel = document.querySelector('.img-upload__effect-level');
+const effectLevelValue = imgUploadEffectLevel.querySelector('.effect-level__value');
+const effectLevelSlider = imgUploadEffectLevel.querySelector('.effect-level__slider');
 const effectsList = document.querySelector('.effects__list');
 
 let currentEffect;
@@ -95,42 +96,43 @@ const setEffect = (nameEffect) => {
   });
 };
 
-const destroyEffect = () => {
+const onEffectDestroy = () => {
   if (effectLevelSlider.noUiSlider) {
     effectLevelSlider.noUiSlider.off();
     effectLevelSlider.noUiSlider.destroy();
   }
-  effectLevelSlider.classList.add('hidden');
+  imgUploadEffectLevel.classList.add('hidden');
   imagePreview.style.filter = '';
   effectLevelValue.value = '';
 };
 
 const onEffectChange = (evt) => {
   const effectRadioButton = evt.target;
-
   if (effectRadioButton.matches('.effects__radio')) {
     imagePreview.classList.remove(`effects__preview--${currentEffect}`);
     currentEffect = effectRadioButton.value;
     imagePreview.classList.add(`effects__preview--${currentEffect}`);
 
     if (currentEffect === 'none') {
-      destroyEffect();
+      onEffectDestroy();
     } else {
+      imgUploadEffectLevel.classList.remove('hidden');
       setEffect(currentEffect);
     }
   }
 };
 
-const initEffects = () => {
+const onEffectsInit = () => {
   currentEffect = 'none';
   imagePreview.classList.add(`effects__preview--${currentEffect}`);
   effectsList.addEventListener('change', onEffectChange);
+  imgUploadEffectLevel.classList.add('hidden');
 };
 
-const destroyEffects = () => {
-  destroyEffect();
+const onEffectsDestroy = () => {
+  onEffectDestroy();
   imagePreview.classList.remove(`effects__preview--${currentEffect}`);
   effectsList.removeEventListener('change', onEffectChange);
 };
 
-export {initEffects, destroyEffects};
+export {onEffectsInit, onEffectsDestroy};

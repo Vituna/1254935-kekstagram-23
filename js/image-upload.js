@@ -1,7 +1,7 @@
 import {isEscEvent} from './utils.js';
 import {onHashtagInput} from './photo-hashtag.js';
 import {setDefaultScale, onMinusButtonClick, onPlusButtonClick} from './scale.js';
-import {initEffects, destroyEffects} from './effects.js';
+import {onEffectsInit, onEffectsDestroy} from './effects.js';
 import {onUploadFormSubmit, onUploadInputChange} from './post.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
@@ -21,10 +21,6 @@ const closeUploadFile = imageUploadForm.querySelector('#upload-cancel');
 
 const getCatchesFocus = () => document.activeElement === inputHashtag || document.activeElement === inputComment;
 
-const toggleModal = () => {
-  body.classList.toggle('modal-open');
-};
-
 const getDownloadPhoto = () => {
   const file = imageUploadInput.files[0];
   const fileName = file.name.toLowerCase();
@@ -40,9 +36,9 @@ const getDownloadPhoto = () => {
 };
 
 const onCloseUploadUserPhoto = () => {
-  toggleModal();
-  setDefaultScale();
-  destroyEffects();
+  onEffectsDestroy();
+  imageUploadForm.reset();
+  body.classList.remove('modal-open');
   userUploadPhoto.classList.add('hidden');
   imageUploadForm.addEventListener('change', onUploadInputChange);
   closeUploadFile.removeEventListener('click', onCloseUploadUserPhoto);
@@ -55,15 +51,16 @@ const onCloseUploadUserPhoto = () => {
 const onPopupEscKeydown = (evt) => {
   if (isEscEvent(evt) && !getCatchesFocus()) {
     evt.preventDefault();
-    imageUploadForm.reset();
     document.removeEventListener('keydown', onPopupEscKeydown);
     onCloseUploadUserPhoto();
   }
 };
 
 const onOpenUploadUserPhoto = () => {
-  toggleModal();
-  initEffects();
+  onEffectsInit();
+  setDefaultScale();
+  // destroyEffects();
+  body.classList.add('modal-open');
   userUploadPhoto.classList.remove('hidden');
   imageUploadForm.removeEventListener('change', onUploadInputChange);
   document.addEventListener('keydown', onPopupEscKeydown);

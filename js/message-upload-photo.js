@@ -11,39 +11,40 @@ const onMessageInnerClick = (evt) => {
   evt.stopPropagation();
 };
 
-const hideMessage = () => {
+const onMessageHide = () => {
   if (currentMessage) {
     currentMessage.remove();
     currentMessage = null;
-    document.removeEventListener('click', hideMessage);
+    document.removeEventListener('click', onMessageHide);
   }
 };
 
 const onDocumentKeydown = (evt) => {
   if (isEscEvent(evt)) {
     evt.preventDefault();
-    hideMessage();
+    onMessageHide();
     document.removeEventListener('keydown', onDocumentKeydown);
   }
 };
 
-const createMessage = (type) => {
+const onMessageCreate = (type) => {
   const messageNode = Template[type.toUpperCase()].cloneNode(true);
   const buttonNode = messageNode.querySelector(`.${type.toLowerCase()}__button`);
   const messageInnerNode = messageNode.querySelector(`.${type.toLowerCase()}__inner`);
 
-  buttonNode.addEventListener('click', hideMessage);
+  buttonNode.addEventListener('click', onMessageHide);
   messageInnerNode.addEventListener('click', onMessageInnerClick);
   document.addEventListener('keydown', onDocumentKeydown);
+  document.addEventListener('click', onMessageHide);
 
   return messageNode;
 };
 
 const showMessage = (type) => {
   if (currentMessage) {
-    hideMessage();
+    onMessageHide();
   }
-  currentMessage = createMessage(type);
+  currentMessage = onMessageCreate(type);
   document.body.appendChild(currentMessage);
 };
 

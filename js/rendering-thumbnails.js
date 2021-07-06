@@ -3,7 +3,7 @@ const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const generateThumbnail = document.createDocumentFragment();
+const documentFragment = document.createDocumentFragment();
 
 const renderMiniPhotos = (photos) => {
   photos.forEach(({id, url, comments, likes}) => {
@@ -12,10 +12,10 @@ const renderMiniPhotos = (photos) => {
     newThumbnail.querySelector('.picture__img').src = url;
     newThumbnail.querySelector('.picture__comments').textContent = comments.length;
     newThumbnail.querySelector('.picture__likes').textContent = likes;
-    generateThumbnail.appendChild(newThumbnail);
+    documentFragment.appendChild(newThumbnail);
   });
 
-  thumbailContainer.appendChild(generateThumbnail);
+  thumbailContainer.appendChild(documentFragment);
 };
 
 export {renderMiniPhotos};

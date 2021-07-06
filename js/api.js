@@ -29,6 +29,8 @@ const fetchData = (method, onSuccess, onError, onFinally, body) => {
     });
 };
 
-export const getData = (onSuccess, onError) => fetchData('GET', onSuccess, onError);
+const getData = (onSuccess, onError) => fetchData('GET', onSuccess, onError);
 
-export const postData = (onSuccess, onError, onFinally, body) => fetchData('POST', onSuccess, onError, onFinally, body);
+const postData = (onSuccess, onError, onFinally, body) => fetchData('POST', onSuccess, onError, onFinally, body);
+
+export {getData, postData};
