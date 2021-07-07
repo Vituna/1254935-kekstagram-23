@@ -1,18 +1,21 @@
-import {userPhotos} from './data.js';
-
 const thumbailContainer = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const generateThumbnail = document.createDocumentFragment();
+const documentFragment = document.createDocumentFragment();
 
-userPhotos.forEach(({url, comments, likes}) => {
-  const newThumbnail = thumbnailTemplate.cloneNode(true);
-  newThumbnail.querySelector('.picture__img').src = url;
-  newThumbnail.querySelector('.picture__comments').textContent = comments.length;
-  newThumbnail.querySelector('.picture__likes').textContent = likes;
-  generateThumbnail.appendChild(newThumbnail);
-});
+const renderMiniPhotos = (photos) => {
+  photos.forEach(({id, url, comments, likes}) => {
+    const newThumbnail = thumbnailTemplate.cloneNode(true);
+    newThumbnail.dataset.id = id;
+    newThumbnail.querySelector('.picture__img').src = url;
+    newThumbnail.querySelector('.picture__comments').textContent = comments.length;
+    newThumbnail.querySelector('.picture__likes').textContent = likes;
+    documentFragment.appendChild(newThumbnail);
+  });
 
-thumbailContainer.appendChild(generateThumbnail);
+  thumbailContainer.appendChild(documentFragment);
+};
+
+export {renderMiniPhotos};

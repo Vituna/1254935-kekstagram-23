@@ -1,10 +1,8 @@
-import {userPhotos} from './data.js';
 import {isEscEvent} from './utils.js';
 
 const MAX_NUMBER_COMMENT = 5;
 
 const body = document.querySelector('body');
-const photoList = body.querySelectorAll('.picture');
 const bigPicture = body.querySelector('.big-picture');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
@@ -33,12 +31,12 @@ const onPopupEscKeydown = (evt) => {
   }
 };
 
-const addCommentsLoader = (loaderComment) => {
+const addCommentsLoaderHandler = (loaderComment) => {
   commentsLoader.classList.remove('hidden');
   commentsLoader.addEventListener('click', loaderComment);
 };
 
-const removeCommentsLoader = (loaderComment) => {
+const removeCommentsLoaderHandler = (loaderComment) => {
   commentsLoader.classList.add('hidden');
   commentsLoader.removeEventListener('click', loaderComment);
 };
@@ -70,7 +68,7 @@ const onCommentsLoaderClick = () => {
 
   lastShownComment += comments.length;
   if (lastShownComment >= currentComments.length) {
-    removeCommentsLoader(onCommentsLoaderClick);
+    removeCommentsLoaderHandler(onCommentsLoaderClick);
   }
   socialCommentCount.innerHTML = getCommentCountHTML(lastShownComment, currentComments.length);
 };
@@ -81,7 +79,7 @@ const updateComments = ({comments}) => {
   commentsList.innerHTML = '';
 
   if (comments.length > 0) {
-    addCommentsLoader(onCommentsLoaderClick);
+    addCommentsLoaderHandler(onCommentsLoaderClick);
     onCommentsLoaderClick();
   } else {
     socialCommentCount.innerHTML = getCommentCountHTML(0, 0);
@@ -91,6 +89,7 @@ const updateComments = ({comments}) => {
 const showPreview = ({url, likes, comments, description}) => {
   commentsList.innerHTML = '';
   tooglePreview();
+  updateComments({comments});
 
   bigPictureImg.querySelector('img').src = url;
   bigPictureLikes.textContent = likes;
@@ -100,20 +99,32 @@ const showPreview = ({url, likes, comments, description}) => {
   commentsList.appendChild(commentFragment);
 };
 
-const addPhotoListClickHandler = (element, index ) => {
-  element.addEventListener('click', () => {
-    showPreview(userPhotos[index]);
-    updateComments(userPhotos[index]);
-    document.addEventListener('keydown', onPopupEscKeydown);
-  });
-};
-
-photoList.forEach(addPhotoListClickHandler);
-
-const closeBigPhoto = () =>{
+const closeBigPhotoHandler = () => {
   bigPicture.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onPopupEscKeydown);
 };
 
-closeButton.addEventListener('click', closeBigPhoto);
+const openBigPhotoHandler = (element ) => {
+  showPreview(element);
+  document.addEventListener('keydown', onPopupEscKeydown);
+  closeButton.addEventListener('click', closeBigPhotoHandler);
+};
+
+const addPhotoListClickHandler = (data) => {
+  const photoList = document.querySelector('.pictures');
+
+  const previewClickHandler = (evt) => {
+    const preview = evt.target.closest('.picture');
+    if (preview) {
+      evt.preventDefault();
+      const previewId = +preview.dataset.id;
+      const dataElement = data.find(({id}) => id === previewId);
+
+      openBigPhotoHandler(dataElement);
+    }
+  };
+  photoList.addEventListener('click', previewClickHandler);
+};
+
+export {addPhotoListClickHandler};
