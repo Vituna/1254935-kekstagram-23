@@ -1,3 +1,4 @@
+const imgFilters = document.querySelector('.img-filters');
 const thumbailContainer = document.querySelector('.pictures');
 const thumbnailTemplate = document.querySelector('#picture')
   .content
@@ -16,6 +17,7 @@ const renderMiniPhotos = (photos) => {
   });
 
   thumbailContainer.appendChild(documentFragment);
+  imgFilters.classList.remove('img-filters--inactive');
 };
 
 export {renderMiniPhotos};
