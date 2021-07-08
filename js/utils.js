@@ -1,4 +1,5 @@
 const ERROR = 'Не корректный диапазон:)';
+const RERENDER_DELAY = 500;
 
 const getMaxStringLength = (string, maxLength) => string.length <= maxLength;
 
@@ -23,4 +24,27 @@ const getRandomNonRepeatingNumbers = (min, max) => {
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-export {getMaxStringLength, getRandomNumber, getRandomArrElement, getIndexes, getRandomNonRepeatingNumbers, isEscEvent};
+const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
+  let timeoutId;
+
+  return (...rest) => {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+const shuffle = (array) => {
+  array = [...array];
+
+  for (let item = array.length - 1; item > 0; item--) {
+    const cd = Math.floor(Math.random() * (item + 1));
+
+    [array[item], array[cd]] = [array[cd], array[item]];
+  }
+  return array;
+};
+
+const sortByField = (field) => (commentsA, commentsB) => commentsA[field] > commentsB[field] ? 1 : -1;
+
+export {getMaxStringLength, getRandomNumber, getRandomArrElement, getIndexes, getRandomNonRepeatingNumbers, isEscEvent, shuffle, debounce, sortByField};
