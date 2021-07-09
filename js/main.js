@@ -6,12 +6,12 @@ import {onAddPhotoListClick} from './big-picture.js';
 import {showAlert} from './alert.js';
 import {onPhotoFilterRender} from './filter.js';
 
+const onGetDataError = () => showAlert(ERROR_SERVER_MESSAGE);
+
 const onGetDataSuccess = (photos) => {
   renderMiniPhotos(photos);
   onAddPhotoListClick(photos);
   onPhotoFilterRender(photos);
 };
-
-const onGetDataError = () => showAlert(ERROR_SERVER_MESSAGE);
 
 getData(onGetDataSuccess, onGetDataError);
