@@ -1,7 +1,6 @@
 const ERROR = 'Не корректный диапазон:)';
+const ERROR_SERVER = 'Сервер не отвечает';
 const RERENDER_DELAY = 500;
-
-const getMaxStringLength = (string, maxLength) => string.length <= maxLength;
 
 const getRandomNumber = (min, max) => (min >= max || min < 0) ? ERROR : Math.floor(Math.random() * ((max + 1) - min) + min);
 
@@ -9,17 +8,15 @@ const getRandomArrElement = (elements) => elements[getRandomNumber(0, elements.l
 
 const getIndexes = (count) => [...Array(count).keys()];
 
-const getRandomNonRepeatingNumbers = (min, max) => {
-  const previousValues = [];
-  let currentValue = getRandomNumber(min, max);
-  if (previousValues.length >= (max - min + 1)) {
-    throw new Error(`Перебраны все числа из диапазона от ${  min  } до ${  max}`);
+const getRandomUniqueIntegerList = (min, max, length) => {
+  const list = [];
+  while (list.length !== length) {
+    const number = getRandomNumber(min, max);
+    if (!list.includes(number)) {
+      list.push(number);
+    }
   }
-  while (previousValues.includes(currentValue)) {
-    currentValue = getRandomNumber(min, max);
-  }
-  previousValues.push(currentValue);
-  return currentValue;
+  return list;
 };
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
@@ -29,22 +26,10 @@ const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
 
   return (...rest) => {
     clearTimeout(timeoutId);
-
     timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
   };
 };
 
-const shuffle = (array) => {
-  array = [...array];
-
-  for (let item = array.length - 1; item > 0; item--) {
-    const cd = Math.floor(Math.random() * (item + 1));
-
-    [array[item], array[cd]] = [array[cd], array[item]];
-  }
-  return array;
-};
-
 const sortByField = (field) => (commentsA, commentsB) => commentsA[field] > commentsB[field] ? 1 : -1;
 
-export {getMaxStringLength, getRandomNumber, getRandomArrElement, getIndexes, getRandomNonRepeatingNumbers, isEscEvent, shuffle, debounce, sortByField};
+export {getRandomNumber, getRandomArrElement, getIndexes, isEscEvent, debounce, sortByField, getRandomUniqueIntegerList, ERROR_SERVER};

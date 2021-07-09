@@ -59,7 +59,6 @@ const onPopupEscKeydown = (evt) => {
 const onOpenUploadUserPhoto = () => {
   onEffectsInit();
   setDefaultScale();
-  // destroyEffects();
   body.classList.add('modal-open');
   userUploadPhoto.classList.remove('hidden');
   imageUploadForm.removeEventListener('change', onUploadInputChange);

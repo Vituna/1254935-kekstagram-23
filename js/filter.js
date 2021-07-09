@@ -1,4 +1,4 @@
-import {shuffle, sortByField, debounce, getRandomNonRepeatingNumbers} from './utils.js';
+import {sortByField, debounce, getRandomUniqueIntegerList} from './utils.js';
 import {renderMiniPhotos} from './rendering-thumbnails.js';
 
 const SWITCH_DELAY = 500;
@@ -31,22 +31,24 @@ const renderFilteredPhotoList = debounce(
   SWITCH_DELAY,
 );
 
-const onPhotoFilterRender = (photo) => {
+const onPhotoFilterRender = (photos) => {
   imgFilterDefault.addEventListener('click', () => {
     applyFilterImages(imgFilterDefault);
-    renderFilteredPhotoList(photo);
+    renderFilteredPhotoList(photos);
   });
 
   imgFilterRandom.addEventListener('click', () => {
+    let photosMaxId = RANDOM_PHOTOS_LENGTH_MIN;
+    photos.forEach((photo) => photosMaxId = Math.max(photo.id, photosMaxId));
+    const uniqueIntegerList = getRandomUniqueIntegerList(RANDOM_PHOTOS_LENGTH_MIN, photosMaxId, RANDOM_PHOTOS_LENGTH_MAX);
+    const filterRandomPhotos = photos.filter((photo) => uniqueIntegerList.includes(photo.id));
     applyFilterImages(imgFilterRandom);
-    shuffle(photo);
-    const slicedRandomPhotos = photo.slice(getRandomNonRepeatingNumbers(RANDOM_PHOTOS_LENGTH_MIN, RANDOM_PHOTOS_LENGTH_MAX));
-    renderFilteredPhotoList(slicedRandomPhotos);
+    renderFilteredPhotoList(filterRandomPhotos);
   });
 
   imgFilterDiscussed.addEventListener('click', () => {
     applyFilterImages(imgFilterDiscussed);
-    const photosCloned = [...photo];
+    const photosCloned = [...photos];
     photosCloned.sort(sortByField('comments'));
     renderFilteredPhotoList(photosCloned.reverse());
   });
