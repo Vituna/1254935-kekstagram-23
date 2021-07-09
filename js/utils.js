@@ -1,5 +1,5 @@
 const ERROR = 'Не корректный диапазон:)';
-const ERROR_SERVER = 'Сервер не отвечает';
+const ERROR_SERVER_MESSAGE = 'Сервер не отвечает';
 const RERENDER_DELAY = 500;
 
 const getRandomNumber = (min, max) => (min >= max || min < 0) ? ERROR : Math.floor(Math.random() * ((max + 1) - min) + min);
@@ -32,4 +32,4 @@ const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
 
 const sortByField = (field) => (commentsA, commentsB) => commentsA[field] > commentsB[field] ? 1 : -1;
 
-export {getRandomNumber, getRandomArrElement, getIndexes, isEscEvent, debounce, sortByField, getRandomUniqueIntegerList, ERROR_SERVER};
+export {getRandomNumber, getRandomArrElement, getIndexes, isEscEvent, debounce, sortByField, getRandomUniqueIntegerList, ERROR_SERVER_MESSAGE};

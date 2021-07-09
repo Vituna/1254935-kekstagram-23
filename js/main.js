@@ -1,5 +1,5 @@
 import './image-upload.js';
-import {ERROR_SERVER} from './utils.js';
+import {ERROR_SERVER_MESSAGE} from './utils.js';
 import {getData} from './api.js';
 import {renderMiniPhotos} from './rendering-thumbnails.js';
 import {onAddPhotoListClick} from './big-picture.js';
@@ -12,6 +12,6 @@ const onGetDataSuccess = (photos) => {
   onPhotoFilterRender(photos);
 };
 
-const onGetDataError = () => showAlert(ERROR_SERVER);
+const onGetDataError = () => showAlert(ERROR_SERVER_MESSAGE);
 
 getData(onGetDataSuccess, onGetDataError);
