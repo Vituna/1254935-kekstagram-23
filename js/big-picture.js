@@ -14,7 +14,7 @@ const commentsLoader = bigPicture.querySelector('.comments-loader');
 const commentsList = bigPicture.querySelector('.social__comments');
 const closeButton = bigPicture.querySelector('.big-picture__cancel');
 
-const commentFragment = document.createDocumentFragment();
+// const commentFragment = document.createDocumentFragment();
 
 let currentComments = [];
 let lastShownComment = 0;
@@ -50,6 +50,7 @@ const createNewComment = ({avatar, name, message}) => {
 };
 
 const onCommentsLoaderClick = () => {
+  const commentFragment = document.createDocumentFragment();
   const comments = currentComments
     .slice(lastShownComment, lastShownComment + MAX_NUMBER_COMMENT)
     .map(createNewComment);
@@ -90,7 +91,7 @@ const showPreview = ({url, likes, comments, description}) => {
   bigPictureCommentsAll.textContent = comments.length;
   bigPictureDescription.textContent = description;
 
-  commentsList.appendChild(commentFragment);
+  // commentsList.appendChild(commentFragment);
 };
 
 const onBigPhotoClose = () => {
