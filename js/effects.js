@@ -50,45 +50,57 @@ const effectsList = document.querySelector('.effects__list');
 
 let currentEffect;
 
-const setEffect = (nameEffect) => {
+const updateSliderOptions = (nameEffect) => {
   const {
     min,
     max,
     step,
+  } = EffectNameToFilter[nameEffect];
+
+  effectLevelSlider.noUiSlider.off();
+  effectLevelSlider.noUiSlider.updateOptions({
+    range: {
+      min,
+      max,
+    },
+    start: max,
+    step,
+  });
+};
+
+const createSlider = (nameEffect) => {
+  const {
+    min,
+    max,
+    step,
+  } = EffectNameToFilter[nameEffect];
+
+  effectLevelSlider.classList.remove('hidden');
+  noUiSlider.create(effectLevelSlider, {
+    range: {
+      min,
+      max,
+    },
+    start: max,
+    step,
+    connect: 'lower',
+    format: {
+      to: (value) => Number.isInteger(value) ? value.toFixed(0) : value.toFixed(1),
+      from: (value) => parseFloat(value),
+    },
+  });
+};
+
+const setEffect = (nameEffect) => {
+  const {
     name: filterName,
     unit = '',
   } = EffectNameToFilter[nameEffect];
 
   if (effectLevelSlider.noUiSlider) {
-    effectLevelSlider.noUiSlider.off();
-    effectLevelSlider.noUiSlider.updateOptions({
-      range: {
-        min,
-        max,
-      },
-      start: max,
-      step,
-    });
+    updateSliderOptions(nameEffect);
   } else {
-    effectLevelSlider.classList.remove('hidden');
-    noUiSlider.create(effectLevelSlider, {
-      range: {
-        min,
-        max,
-      },
-      start: max,
-      step,
-      connect: 'lower',
-      format: {
-        to: (value) => {
-          if (Number.isInteger(value)) {
-            return value.toFixed(0);
-          }
-          return value.toFixed(1);
-        },
-        from: (value) => parseFloat(value),
-      },
-    });
+    createSlider(nameEffect);
   }
   effectLevelSlider.noUiSlider.on('update', (values, handle) => {
     effectLevelValue.value = values[handle];

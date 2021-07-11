@@ -7,8 +7,13 @@ const HASHTAG_REGEXP = new RegExp('^#[A-Za-zА-Яа-я0-9]{1,110}$');
 
 const inputHashtag = document.querySelector('.text__hashtags');
 
+const setHashtagsStyles = (borderColor = DEFAULT_BORDER_COLOR, outlineColor = DEFAULT_BORDER_COLOR) => {
+  inputHashtag.style.borderColor = borderColor;
+  inputHashtag.style.outlineColor = outlineColor;
+};
+
 const onHashtagInput = () => {
-  let hashtagCorrect = true;
+  let isHashtagCorrect = true;
   let hashtagsMaxLength = 0;
 
   const hashtags = inputHashtag.value.split(' ');
@@ -18,36 +23,29 @@ const onHashtagInput = () => {
   for (let index = 0; index < hashtag.length; index++) {
     hashtagsMaxLength = Math.max(hashtagsMaxLength, hashtag[index].length);
 
-    hashtagCorrect = hashtagCorrect && HASHTAG_REGEXP.test(hashtag[index]);
+    isHashtagCorrect = isHashtagCorrect && HASHTAG_REGEXP.test(hashtag[index]);
   }
   if (hashtagsMaxLength === 0) {
     inputHashtag.setCustomValidity('');
-    inputHashtag.style.borderColor = DEFAULT_BORDER_COLOR;
-    inputHashtag.style.outlineColor = DEFAULT_BORDER_COLOR;
+    setHashtagsStyles();
   } else if (hashtag.includes('#')) {
     inputHashtag.setCustomValidity(`Минимальная длина хэш-тега ${MIN_HASHTAG_LENGTH} символа, включая решётку`);
-    inputHashtag.style.borderColor = ERROR_BORDER_COLOR;
-    inputHashtag.style.outlineColor = ERROR_BORDER_COLOR;
-  }  else if (!hashtagCorrect) {
+    setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
+  }  else if (!isHashtagCorrect) {
     inputHashtag.setCustomValidity('Строка после решётки может состоять из букв и чисел и не может содержать пробелы!');
-    inputHashtag.style.borderColor = ERROR_BORDER_COLOR;
-    inputHashtag.style.outlineColor = ERROR_BORDER_COLOR;
+    setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
   } else if (hashtagsMaxLength > MAX_HASHTAG_LENGTH) {
     inputHashtag.setCustomValidity(`Максимальная длина хэш-тега ${MAX_HASHTAG_LENGTH} символов, включая решётку`);
-    inputHashtag.style.borderColor = ERROR_BORDER_COLOR;
-    inputHashtag.style.outlineColor = ERROR_BORDER_COLOR;
+    setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
   } else if (hashtag.length > MAX_HASHTAG_COUNT) {
     inputHashtag.setCustomValidity(`Нельзя указать больше чем ${MAX_HASHTAG_COUNT} хэш-тегов`);
-    inputHashtag.style.borderColor = ERROR_BORDER_COLOR;
-    inputHashtag.style.outlineColor = ERROR_BORDER_COLOR;
+    setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
   } else if (hashtag.length !== hashtagsSet.size) {
     inputHashtag.setCustomValidity('Такой хэш-тег уже набран');
-    inputHashtag.style.borderColor = ERROR_BORDER_COLOR;
-    inputHashtag.style.outlineColor = ERROR_BORDER_COLOR;
+    setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
   } else {
     inputHashtag.setCustomValidity('');
-    inputHashtag.style.borderColor = DEFAULT_BORDER_COLOR;
-    inputHashtag.style.outlineColor = DEFAULT_BORDER_COLOR;
+    setHashtagsStyles();
   }
 };
 

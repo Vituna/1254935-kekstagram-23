@@ -9,8 +9,8 @@ const imageUploadPreview = document.querySelector('.img-upload__preview');
 let scaleValue = DEFAULT_SCALE_VALUE;
 scaleControlValue.value = `${scaleValue}%`;
 
-const setRescalePhoto = (comparsion, computation) => {
-  if (comparsion) {
+const setRescalePhoto = (isIntermediateValue, computation) => {
+  if (isIntermediateValue) {
     scaleValue = computation;
     scaleControlValue.value = `${scaleValue}%`;
     imageUploadPreview.style.transform = `scale(${scaleValue * TRANSFORM_STYLE_PHOTO})`;

@@ -2,7 +2,8 @@ import {isEscEvent} from './utils.js';
 import {onHashtagInput} from './photo-hashtag.js';
 import {setDefaultScale, onMinusButtonClick, onPlusButtonClick} from './scale.js';
 import {onEffectsInit, onEffectsDestroy} from './effects.js';
-import {onUploadFormSubmit, onUploadInputChange} from './post.js';
+import {postData} from './api.js';
+import {showMessage} from './message-upload-photo.js';
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
@@ -15,14 +16,35 @@ const imageUploadPreview = userUploadPhoto.querySelector('.img-upload__preview')
 const img = imageUploadPreview.querySelector('img');
 const inputHashtag = imageUploadForm.querySelector('.text__hashtags');
 const inputComment = imageUploadForm.querySelector('.text__description');
-const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
+const onUploadInputChange = imageUploadForm.querySelector('.img-upload__input');
 const uploadFile = imageUploadForm.querySelector('#upload-file');
 const closeUploadFile = imageUploadForm.querySelector('#upload-cancel');
+const submitButtonNode = imageUploadForm.querySelector('#upload-submit');
 
-const getCatchesFocus = () => document.activeElement === inputHashtag || document.activeElement === inputComment;
+const isInputInFocus = () => document.activeElement === inputHashtag || document.activeElement === inputComment;
+
+const onPostDataSuccess = () => {
+  onUserPhotoClose();
+  showMessage('success');
+};
+
+const onPostDataError = () => {
+  onUserPhotoClose();
+  showMessage('error');
+};
+
+const onPostDataFinally = () => submitButtonNode.disabled = false;
+
+const onUploadFormSubmit = (evt) => {
+  evt.preventDefault();
+
+  submitButtonNode.disabled = true;
+  const form = new FormData(evt.currentTarget);
+  postData(onPostDataSuccess, onPostDataError, onPostDataFinally, form);
+};
 
 const getDownloadPhoto = () => {
-  const file = imageUploadInput.files[0];
+  const file = onUploadInputChange.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
@@ -35,42 +57,42 @@ const getDownloadPhoto = () => {
   }
 };
 
-const onCloseUploadUserPhoto = () => {
-  onEffectsDestroy();
-  imageUploadForm.reset();
-  body.classList.remove('modal-open');
-  userUploadPhoto.classList.add('hidden');
-  imageUploadForm.addEventListener('change', onUploadInputChange);
-  closeUploadFile.removeEventListener('click', onCloseUploadUserPhoto);
-  inputHashtag.removeEventListener('input', onHashtagInput);
-  scaleControlSmaller.removeEventListener('click', onMinusButtonClick);
-  scaleControlBigger.removeEventListener('click', onPlusButtonClick);
-  imageUploadForm.removeEventListener('submit', onUploadFormSubmit);
-};
-
 const onPopupEscKeydown = (evt) => {
-  if (isEscEvent(evt) && !getCatchesFocus()) {
+  if (isEscEvent(evt) && !isInputInFocus()) {
     evt.preventDefault();
-    document.removeEventListener('keydown', onPopupEscKeydown);
-    onCloseUploadUserPhoto();
+    onUserPhotoClose();
   }
 };
 
-const onOpenUploadUserPhoto = () => {
+const onUserPhotoUpload = () => {
   onEffectsInit();
   setDefaultScale();
   body.classList.add('modal-open');
   userUploadPhoto.classList.remove('hidden');
-  imageUploadForm.removeEventListener('change', onUploadInputChange);
   document.addEventListener('keydown', onPopupEscKeydown);
-  closeUploadFile.addEventListener('click', onCloseUploadUserPhoto);
+  imageUploadForm.removeEventListener('change', onUserPhotoUpload);
+  closeUploadFile.addEventListener('click', onUserPhotoClose);
   inputHashtag.addEventListener('input', onHashtagInput);
   scaleControlSmaller.addEventListener('click', onMinusButtonClick);
   scaleControlBigger.addEventListener('click', onPlusButtonClick);
   imageUploadForm.addEventListener('submit', onUploadFormSubmit);
 };
 
-uploadFile.addEventListener('change', onOpenUploadUserPhoto);
-imageUploadInput.addEventListener('change', getDownloadPhoto);
+function onUserPhotoClose () {
+  onEffectsDestroy();
+  imageUploadForm.reset();
+  body.classList.remove('modal-open');
+  userUploadPhoto.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscKeydown);
+  imageUploadForm.addEventListener('change', onUserPhotoUpload);
+  closeUploadFile.removeEventListener('click', onUserPhotoClose);
+  inputHashtag.removeEventListener('input', onHashtagInput);
+  scaleControlSmaller.removeEventListener('click', onMinusButtonClick);
+  scaleControlBigger.removeEventListener('click', onPlusButtonClick);
+  imageUploadForm.removeEventListener('submit', onUploadFormSubmit);
+}
 
-export {onCloseUploadUserPhoto, onOpenUploadUserPhoto};
+uploadFile.addEventListener('change', onUserPhotoUpload);
+onUploadInputChange.addEventListener('change', getDownloadPhoto);
+
+export {onUserPhotoClose, onUserPhotoUpload};

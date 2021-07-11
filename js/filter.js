@@ -20,38 +20,42 @@ const applyFilterImages = (filterButton) => {
 };
 
 const renderFilteredPhotoList = debounce(
-  (photo) => {
+  (photos) => {
     const pictures = thumbailContainer.querySelectorAll('.picture');
 
     pictures.forEach((picture) => {
       picture.remove();
     });
-    renderMiniPhotos(photo);
+    renderMiniPhotos(photos);
   },
   SWITCH_DELAY,
 );
 
+const applyFilterDefault = (photos) => {
+  applyFilterImages(imgFilterDefault);
+  renderFilteredPhotoList(photos);
+};
+
+const applyFilterRandom = (photos) => {
+  let photosMaxId = RANDOM_PHOTOS_LENGTH_MIN;
+  photos.forEach((photo) => photosMaxId = Math.max(photo.id, photosMaxId));
+  const uniqueIntegerList = getRandomUniqueIntegerList(RANDOM_PHOTOS_LENGTH_MIN, photosMaxId, RANDOM_PHOTOS_LENGTH_MAX);
+  const filterRandomPhotos = photos.filter((photo) => uniqueIntegerList.includes(photo.id));
+  applyFilterImages(imgFilterRandom);
+  renderFilteredPhotoList(filterRandomPhotos);
+};
+
+const applyFilterDiscussed = (photos) => {
+  applyFilterImages(imgFilterDiscussed);
+  const photosCloned = [...photos];
+  photosCloned.sort(sortByField('comments'));
+  renderFilteredPhotoList(photosCloned.reverse());
+};
+
 const onPhotoFilterRender = (photos) => {
-  imgFilterDefault.addEventListener('click', () => {
-    applyFilterImages(imgFilterDefault);
-    renderFilteredPhotoList(photos);
-  });
-
-  imgFilterRandom.addEventListener('click', () => {
-    let photosMaxId = RANDOM_PHOTOS_LENGTH_MIN;
-    photos.forEach((photo) => photosMaxId = Math.max(photo.id, photosMaxId));
-    const uniqueIntegerList = getRandomUniqueIntegerList(RANDOM_PHOTOS_LENGTH_MIN, photosMaxId, RANDOM_PHOTOS_LENGTH_MAX);
-    const filterRandomPhotos = photos.filter((photo) => uniqueIntegerList.includes(photo.id));
-    applyFilterImages(imgFilterRandom);
-    renderFilteredPhotoList(filterRandomPhotos);
-  });
-
-  imgFilterDiscussed.addEventListener('click', () => {
-    applyFilterImages(imgFilterDiscussed);
-    const photosCloned = [...photos];
-    photosCloned.sort(sortByField('comments'));
-    renderFilteredPhotoList(photosCloned.reverse());
-  });
+  imgFilterDefault.addEventListener('click', () => applyFilterDefault(photos));
+  imgFilterRandom.addEventListener('click', () => applyFilterRandom(photos));
+  imgFilterDiscussed.addEventListener('click', () => applyFilterDiscussed(photos));
 };
 
 export {onPhotoFilterRender};

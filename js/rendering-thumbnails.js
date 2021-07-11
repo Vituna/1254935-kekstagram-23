@@ -4,9 +4,9 @@ const thumbnailTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
-const documentFragment = document.createDocumentFragment();
 
 const renderMiniPhotos = (photos) => {
+  const documentFragment = document.createDocumentFragment();
   photos.forEach(({id, url, comments, likes}) => {
     const newThumbnail = thumbnailTemplate.cloneNode(true);
     newThumbnail.dataset.id = id;

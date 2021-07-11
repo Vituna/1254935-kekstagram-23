@@ -4,7 +4,6 @@ const Url = {
 };
 
 const fetchData = (method, onSuccess, onError, onFinally, body) => {
-  method = method.toUpperCase();
   fetch(Url[method], {method, body})
     .then((response) => {
       if (response.ok) {

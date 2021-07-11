@@ -4,6 +4,7 @@ const MAX_NUMBER_COMMENT = 5;
 
 const body = document.querySelector('body');
 const bigPicture = body.querySelector('.big-picture');
+const photoList = body.querySelector('.pictures');
 const bigPictureImg = bigPicture.querySelector('.big-picture__img');
 const bigPictureLikes = bigPicture.querySelector('.likes-count');
 const bigPictureCommentsAll = bigPicture.querySelector('.comments-count');
@@ -105,8 +106,6 @@ const onBigPhotoOpen = (element ) => {
 };
 
 const onAddPhotoListClick = (data) => {
-  const photoList = document.querySelector('.pictures');
-
   const onPreviewClick = (evt) => {
     const preview = evt.target.closest('.picture');
     if (preview) {

@@ -32,4 +32,17 @@ const debounce = (callback, timeoutDelay = RERENDER_DELAY) => {
 
 const sortByField = (field) => (commentsA, commentsB) => commentsA[field] > commentsB[field] ? 1 : -1;
 
-export {getRandomNumber, getRandomArrElement, getIndexes, isEscEvent, debounce, sortByField, getRandomUniqueIntegerList, ERROR_SERVER_MESSAGE};
+const createAlert = (text) => {
+  const newSectionError = document.createElement('section');
+  newSectionError.classList.add('error');
+  newSectionError.innerHTML = `
+    <div class="error__inner">
+      <h2 class="error__title">${text}</h2>
+    </div>
+  `;
+  return newSectionError;
+};
+
+const showAlert = (text) => document.body.appendChild(createAlert(text));
+
+export {getRandomNumber, getRandomArrElement, getIndexes, isEscEvent, debounce, sortByField, getRandomUniqueIntegerList, showAlert, ERROR_SERVER_MESSAGE};
