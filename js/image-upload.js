@@ -1,5 +1,5 @@
 import {isEscEvent} from './utils.js';
-import {onHashtagInput} from './photo-hashtag.js';
+import {onHashtagInput, setHashtagsStyles} from './photo-hashtag.js';
 import {setDefaultScale, onMinusButtonClick, onPlusButtonClick} from './scale.js';
 import {onEffectsInit, onEffectsDestroy} from './effects.js';
 import {postData} from './api.js';
@@ -67,6 +67,7 @@ const onPopupEscKeydown = (evt) => {
 const onUserPhotoUpload = () => {
   onEffectsInit();
   setDefaultScale();
+  setHashtagsStyles();
   body.classList.add('modal-open');
   userUploadPhoto.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscKeydown);

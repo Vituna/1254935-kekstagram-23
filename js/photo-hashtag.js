@@ -13,22 +13,22 @@ const setHashtagsStyles = (borderColor = DEFAULT_BORDER_COLOR, outlineColor = DE
 };
 
 const onHashtagInput = () => {
+  setHashtagsStyles();
   let isHashtagCorrect = true;
   let hashtagsMaxLength = 0;
+  const hashtagsValues = inputHashtag.value.split(' ');
+  const hashtags = hashtagsValues.map((tag) => tag.toLowerCase());
+  const hashtagsSet = new Set(hashtags);
 
-  const hashtags = inputHashtag.value.split(' ');
-  const hashtag = hashtags.map((tag) => tag.toLowerCase());
-  const hashtagsSet = new Set(hashtag);
+  for (let index = 0; index < hashtags.length; index++) {
+    hashtagsMaxLength = Math.max(hashtagsMaxLength, hashtags[index].length);
 
-  for (let index = 0; index < hashtag.length; index++) {
-    hashtagsMaxLength = Math.max(hashtagsMaxLength, hashtag[index].length);
-
-    isHashtagCorrect = isHashtagCorrect && HASHTAG_REGEXP.test(hashtag[index]);
+    isHashtagCorrect = isHashtagCorrect && HASHTAG_REGEXP.test(hashtags[index]);
   }
   if (hashtagsMaxLength === 0) {
     inputHashtag.setCustomValidity('');
     setHashtagsStyles();
-  } else if (hashtag.includes('#')) {
+  } else if (hashtags.includes('#')) {
     inputHashtag.setCustomValidity(`Минимальная длина хэш-тега ${MIN_HASHTAG_LENGTH} символа, включая решётку`);
     setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
   }  else if (!isHashtagCorrect) {
@@ -37,10 +37,10 @@ const onHashtagInput = () => {
   } else if (hashtagsMaxLength > MAX_HASHTAG_LENGTH) {
     inputHashtag.setCustomValidity(`Максимальная длина хэш-тега ${MAX_HASHTAG_LENGTH} символов, включая решётку`);
     setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
-  } else if (hashtag.length > MAX_HASHTAG_COUNT) {
+  } else if (hashtags.length > MAX_HASHTAG_COUNT) {
     inputHashtag.setCustomValidity(`Нельзя указать больше чем ${MAX_HASHTAG_COUNT} хэш-тегов`);
     setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
-  } else if (hashtag.length !== hashtagsSet.size) {
+  } else if (hashtags.length !== hashtagsSet.size) {
     inputHashtag.setCustomValidity('Такой хэш-тег уже набран');
     setHashtagsStyles(ERROR_BORDER_COLOR, ERROR_BORDER_COLOR);
   } else {
@@ -49,4 +49,4 @@ const onHashtagInput = () => {
   }
 };
 
-export {onHashtagInput};
+export {onHashtagInput, setHashtagsStyles};

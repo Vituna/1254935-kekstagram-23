@@ -4,19 +4,15 @@ const RERENDER_DELAY = 500;
 
 const getRandomNumber = (min, max) => (min >= max || min < 0) ? ERROR : Math.floor(Math.random() * ((max + 1) - min) + min);
 
-const getRandomArrElement = (elements) => elements[getRandomNumber(0, elements.length - 1)];
-
-const getIndexes = (count) => [...Array(count).keys()];
-
 const getRandomUniqueIntegerList = (min, max, length) => {
-  const list = [];
-  while (list.length !== length) {
+  const lists = [];
+  while (lists.length !== length) {
     const number = getRandomNumber(min, max);
-    if (!list.includes(number)) {
-      list.push(number);
+    if (!lists.includes(number)) {
+      lists.push(number);
     }
   }
-  return list;
+  return lists;
 };
 
 const isEscEvent = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
@@ -45,4 +41,4 @@ const createAlert = (text) => {
 
 const showAlert = (text) => document.body.appendChild(createAlert(text));
 
-export {getRandomNumber, getRandomArrElement, getIndexes, isEscEvent, debounce, sortByField, getRandomUniqueIntegerList, showAlert, ERROR_SERVER_MESSAGE};
+export {getRandomNumber, isEscEvent, debounce, sortByField, getRandomUniqueIntegerList, showAlert, ERROR_SERVER_MESSAGE};

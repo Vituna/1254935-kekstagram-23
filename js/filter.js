@@ -37,8 +37,7 @@ const applyFilterDefault = (photos) => {
 };
 
 const applyFilterRandom = (photos) => {
-  let photosMaxId = RANDOM_PHOTOS_LENGTH_MIN;
-  photos.forEach((photo) => photosMaxId = Math.max(photo.id, photosMaxId));
+  const photosMaxId = Math.max(...photos.map((photo) => photo.id));
   const uniqueIntegerList = getRandomUniqueIntegerList(RANDOM_PHOTOS_LENGTH_MIN, photosMaxId, RANDOM_PHOTOS_LENGTH_MAX);
   const filterRandomPhotos = photos.filter((photo) => uniqueIntegerList.includes(photo.id));
   applyFilterImages(imgFilterRandom);
