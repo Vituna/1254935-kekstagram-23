@@ -16,7 +16,7 @@ const imageUploadPreview = userUploadPhoto.querySelector('.img-upload__preview')
 const img = imageUploadPreview.querySelector('img');
 const inputHashtag = imageUploadForm.querySelector('.text__hashtags');
 const inputComment = imageUploadForm.querySelector('.text__description');
-const onUploadInputChange = imageUploadForm.querySelector('.img-upload__input');
+const imageUploadInput = imageUploadForm.querySelector('.img-upload__input');
 const uploadFile = imageUploadForm.querySelector('#upload-file');
 const closeUploadFile = imageUploadForm.querySelector('#upload-cancel');
 const submitButtonNode = imageUploadForm.querySelector('#upload-submit');
@@ -43,8 +43,8 @@ const onUploadFormSubmit = (evt) => {
   postData(onPostDataSuccess, onPostDataError, onPostDataFinally, form);
 };
 
-const getDownloadPhoto = () => {
-  const file = onUploadInputChange.files[0];
+const onUploadInputChange = () => {
+  const file = imageUploadInput.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
@@ -93,6 +93,6 @@ function onUserPhotoClose () {
 }
 
 uploadFile.addEventListener('change', onUserPhotoUpload);
-onUploadInputChange.addEventListener('change', getDownloadPhoto);
+imageUploadInput.addEventListener('change', onUploadInputChange);
 
 export {onUserPhotoClose, onUserPhotoUpload};
